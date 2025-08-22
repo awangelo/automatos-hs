@@ -25,30 +25,46 @@ newtype Automato est
 instance (Show est) => Show (Automato est) where
     show :: Automato est -> String
     show (Automato (alfa, estados, _delta, q0, finais)) =
-        "Automato {\n  Σ  ⇒ "
+        "Automato {\n   Σ  ⇒ "
             ++ show alfa
-            ++ "\n  Q  ⇒ "
+            ++ "\n   Q  ⇒ "
             ++ show estados
-            ++ "\n  δ"
-            ++ "\n  q0 ⇒ "
+            ++ "\n   δ"
+            ++ "\n   q0 ⇒ "
             ++ show q0
-            ++ "\n  F  ⇒ "
+            ++ "\n   F  ⇒ "
             ++ show finais
             ++ "\n}"
 
 newtype Alfabeto = Alfabeto (Set.Set Char)
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance Show Alfabeto where
+    show :: Alfabeto -> String
+    show (Alfabeto cs) = Set.toList cs
 
 newtype Estados est = Estados (Set.Set est)
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance (Show est) => Show (Estados est) where
+    show :: Estados est -> String
+    show (Estados es) = unwords . map show $ Set.toList es
 
 newtype Transicao est = Transicao ((est, Char) -> est)
 
 newtype EstadoInicial est = EstadoInicial est
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance (Show est) => Show (EstadoInicial est) where
+    show :: EstadoInicial est -> String
+    show (EstadoInicial e) = show e
 
 newtype EstadosFinais est = EstadosFinais (Set.Set est)
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance (Show est) => Show (EstadosFinais est) where
+    show :: EstadosFinais est -> String
+    show (EstadosFinais fs) = unwords . map show $ Set.toList fs
 
 processarString :: (Ord est) => Automato est -> String -> (Bool, [est])
 processarString (Automato (_, _, Transicao delta, EstadoInicial q0, EstadosFinais finais)) input =
