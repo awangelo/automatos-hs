@@ -1,7 +1,7 @@
 module Main (main) where
 
-import           DFAs (automato_L2, automato_L3)
-import           Repl (repl)
+import DFAs (automato_L2, automato_L3)
+import Repl (repl)
 
 main :: IO ()
 main = do
@@ -10,6 +10,6 @@ main = do
     putStrLn "2. L3 = { w | w tem prefixo 'aa' } "
     opcao <- getLine
     case opcao of
-        "1" -> repl "L2 (tamanho > 3)" automato_L2
-        "2" -> repl "L3 (prefixo 'aa')" automato_L3
-        _   -> putStrLn "?"
+        "1" -> repl automato_L2
+        "2" -> repl automato_L3
+        _ -> putStrLn "?"
