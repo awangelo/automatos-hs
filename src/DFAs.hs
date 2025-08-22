@@ -1,4 +1,4 @@
-module DFAs (automato_L1, automato_L2, automato_L3, automato_L4) where
+module DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5) where
 
 import Types (
     Automato,
@@ -78,7 +78,20 @@ automato_L4 =
     transicao_L4 ("q_0", _) = "q_1"
     transicao_L4 ("q_1", _) = "q_2"
     transicao_L4 ("q_2", _) = "q_0"
-    transicao_L4 ("q_0", _) = "q_0"
     transicao_L4 _ = error "Transicao invalida."
 
-
+-- L5 = { w ⋹ {1, 0}* | cada 0 de w eh seguido por no minimo dois 1's }
+automato_L5 :: Automato String
+automato_L5 =
+    mkAutomato
+        (mkAlfabeto ['0', '1'])
+        (mkEstados ["q_0", "q_1", "q_2", "q_3"])
+        (mkTransicao transicao_L5)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_0"])
+  where
+    transicao_L5 ("q_0", '0') = "q_1"
+    transicao_L5 ("q_0", '1') = "q_0"
+    transicao_L5 ("q_1", '1') = "q_2"
+    transicao_L5 ("q_2", '1') = "q_0"
+    transicao_L5 _ = error "Transicao invalida."

@@ -3,6 +3,6 @@
 ```
 TODO:
 
-show para um automato
-show para alfabeto?
+validar transicao
+remover " " do input
 ```
