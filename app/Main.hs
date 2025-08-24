@@ -1,6 +1,6 @@
 module Main (main) where
 
-import DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5)
+import DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5, automato_LA, automato_LB, automato_LC)
 import Repl (repl)
 import System.IO (hFlush, stdout)
 
@@ -12,6 +12,9 @@ main = do
     putStrLn "3. L3 = { w | w tem prefixo 'aa' }"
     putStrLn "4. L4 = { w | |w| eh multiplo de 3 }"
     putStrLn "5. L5 = { w | cada 0 eh seguido por no minimo dois 1's }"
+    putStrLn "6. LA = { w | w nao tem as sub-palavras 000 ∨ 111 }"
+    putStrLn "7. LB = { w ⋹ {0, 1}* | os ultimos 3 simbolos de w NAO SAO 000 }"
+    putStrLn "8. LC = { w ⋹ {a, b}* | w NAO contem ab }"
     putStr "> "
     hFlush stdout
     opcao <- getLine
@@ -21,4 +24,7 @@ main = do
         "3" -> repl automato_L3
         "4" -> repl automato_L4
         "5" -> repl automato_L5
+        "6" -> repl automato_LA
+        "7" -> repl automato_LB
+        "8" -> repl automato_LC
         _ -> putStrLn "Opcao invalida"

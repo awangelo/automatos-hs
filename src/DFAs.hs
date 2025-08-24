@@ -1,4 +1,4 @@
-module DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5) where
+module DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5, automato_LA, automato_LB, automato_LC) where
 
 import Types (
     Automato,
@@ -95,3 +95,63 @@ automato_L5 =
     transicao_L5 ("q_1", '1') = "q_2"
     transicao_L5 ("q_2", '1') = "q_0"
     transicao_L5 _ = error "Transicao invalida."
+
+-- LA = { w ⋹ {0, 1}* | w nao tem as sub-palavras "000" ∨ "111" }
+automato_LA :: Automato String
+automato_LA =
+    mkAutomato
+        (mkAlfabeto ['0', '1'])
+        (mkEstados ["q_0", "q_1", "q_2", "q_3", "q_4", "q_trap"])
+        (mkTransicao transicao_LA)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_0", "q_1", "q_2", "q_3", "q_4"])
+  where
+    transicao_LA ("q_0", '0') = "q_1"
+    transicao_LA ("q_0", '1') = "q_2"
+    transicao_LA ("q_1", '0') = "q_4"
+    transicao_LA ("q_1", '1') = "q_2"
+    transicao_LA ("q_2", '0') = "q_1"
+    transicao_LA ("q_2", '1') = "q_3"
+    transicao_LA ("q_3", '0') = "q_1"
+    transicao_LA ("q_3", '1') = "q_trap"
+    transicao_LA ("q_4", '0') = "q_trap"
+    transicao_LA ("q_4", '1') = "q_2"
+    transicao_LA ("q_trap", _) = "q_trap"
+    transicao_LA _ = error "Transicao invalida."
+
+-- LB = { w ⋹ {0, 1}* | os ultimos 3 simbolos de w NAO SAO 000 }
+automato_LB :: Automato String
+automato_LB =
+    mkAutomato
+        (mkAlfabeto ['0', '1'])
+        (mkEstados ["q_0", "q_1", "q_2", "q_3"])
+        (mkTransicao transicao_LB)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_0", "q_1", "q_2"])
+  where
+    transicao_LB ("q_0", '0') = "q_1"
+    transicao_LB ("q_0", '1') = "q_0"
+    transicao_LB ("q_1", '0') = "q_2"
+    transicao_LB ("q_1", '1') = "q_0"
+    transicao_LB ("q_2", '0') = "q_3"
+    transicao_LB ("q_2", '1') = "q_0"
+    transicao_LB ("q_3", '0') = "q_3"
+    transicao_LB ("q_3", '1') = "q_0"
+    transicao_LB _ = error "Transicao invalida."
+
+-- LC = { w ⋹ {a, b}* | w NAO contem ab }
+automato_LC :: Automato String
+automato_LC =
+    mkAutomato
+        (mkAlfabeto ['a', 'b'])
+        (mkEstados ["q_0", "q_1", "q_trap"])
+        (mkTransicao transicao_LC)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_0", "q_1", "q_2"])
+  where
+    transicao_LC ("q_0", 'a') = "q_1"
+    transicao_LC ("q_0", 'b') = "q_0"
+    transicao_LC ("q_1", 'a') = "q_1"
+    transicao_LC ("q_1", 'b') = "q_trap"
+    transicao_LC ("q_trap", _) = "q_trap"
+    transicao_LC _ = error "Transicao invalida."
