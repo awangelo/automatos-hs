@@ -1,4 +1,4 @@
-module DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5, automato_LA, automato_LB, automato_LC) where
+module DFAs (automato_L1, automato_L2, automato_L3, automato_L4, automato_L5, automato_LA, automato_LB, automato_LC, automato_LD, automato_LE) where
 
 import Types (
     Automato,
@@ -155,3 +155,49 @@ automato_LC =
     transicao_LC ("q_1", 'b') = "q_trap"
     transicao_LC ("q_trap", _) = "q_trap"
     transicao_LC _ = error "Transicao invalida."
+
+-- LD = { w ∈ {a, b}∗ | w tem tamanho multiplo 3 e NAO contem ab }
+automato_LD :: Automato String
+automato_LD =
+    mkAutomato
+        (mkAlfabeto ['a', 'b'])
+        (mkEstados ["q_0", "q_1", "q_2", "q_3", "q_4", "q_5", "q_trap"])
+        (mkTransicao transicao_LD)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_0", "q_4"])
+  where
+    transicao_LD ("q_0", 'a') = "q_1"
+    transicao_LD ("q_0", 'b') = "q_2"
+    transicao_LD ("q_1", 'a') = "q_5"
+    transicao_LD ("q_1", 'b') = "q_trap"
+    transicao_LD ("q_2", 'a') = "q_5"
+    transicao_LD ("q_2", 'b') = "q_3"
+    transicao_LD ("q_3", 'a') = "q_4"
+    transicao_LD ("q_3", 'b') = "q_0"
+    transicao_LD ("q_4", 'a') = "q_1"
+    transicao_LD ("q_4", 'b') = "q_trap"
+    transicao_LD ("q_5", 'a') = "q_4"
+    transicao_LD ("q_5", 'b') = "q_trap"
+    transicao_LD ("q_trap", _) = "q_trap"
+    transicao_LD _ = error "Transicao invalida."
+
+-- LE = { w ⋹ {0, 1}* | 1*0*1
+automato_LE :: Automato String
+automato_LE =
+    mkAutomato
+        (mkAlfabeto ['0', '1'])
+        (mkEstados ["q_0", "q_1", "q_trap"])
+        (mkTransicao transicao_LE)
+        (mkEstadoInicial "q_0")
+        (mkEstadosFinais ["q_2"])
+  where
+    transicao_LE ("q_0", '0') = "q_trap"
+    transicao_LE ("q_0", '1') = "q_1"
+    transicao_LE ("q_1", '0') = "q_3"
+    transicao_LE ("q_1", '1') = "q_2"
+    transicao_LE ("q_2", '0') = "q_trap"
+    transicao_LE ("q_2", '1') = "q_trap"
+    transicao_LE ("q_3", '0') = "q_1"
+    transicao_LE ("q_3", '1') = "q_2"
+    transicao_LE ("q_trap", _) = "q_trap"
+    transicao_LE _ = error "Transicao invalida."
